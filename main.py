@@ -1,79 +1,148 @@
-# Entonces veremos qué hace cada quién
-# Ahí vamos viendo, pero pues, tiene que estar listo para el lunes, o a más tardar martes
-class Persona:
-    def __init__(self, Nombre, DPI, Correo):
-        self.Nombre = Nombre
-        self.DPI = DPI
-        self.Correo = Correo
+from collections import deque
+
+class Person:
+    def __init__(self, name, dpi, email, rating):
+        self.name = name
+        self.dpi = dpi
+        self.email = email
+        self.rating = rating
+
     @property
-    def Nombre(self):
-        return self.__Nombre
-    @Nombre.setter
-    def Nombre(self, Nombre):
-        if len(Nombre) >= 3:
-            self.__Nombre = Nombre
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if len(name) >= 3:
+            self._name = name
         else:
             print("Nombre incorrecto")
+
     @property
-    def DPI(self):
-        return self.__DPI
-    @DPI.setter
-    def DPI(self, DPI):
-        if len(DPI)==13:
-            self.__DPI = DPI
+    def dpi(self):
+        return self._dpi
+
+    @dpi.setter
+    def dpi(self, dpi):
+        if len(dpi)==13:
+            self._dpi = dpi
         else:
             print("DPI incorrecto")
+
     @property
-    def Correo(self):
-        return self.__Correo
-    @Correo.setter
-    def Correo(self, Correo):
-        if '@' in Correo:
-            self.__Correo = Correo
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        if '@' in email:
+            self._email = email
         else:
             print("Correo incorrecto")
-    def MostrarInformacion(self):
-        print("Nombre:", self.Nombre)
-        print("DPI:", self.DPI)
-        print("Correo:", self.Correo)
-class Usuario(Persona):
-    def __init__(self, Nombre, DPI, Correo, Direccion):
-        super().__init__(Nombre,DPI,Correo)
-        self.Direccion = Direccion
+
     @property
-    def Direccion(self):
-        return self.__Direccion
-    @Direccion.setter
-    def Direccion(self, Direccion):
-        self.__Direccion = Direccion
-    def MostrarInformacion(self):
-        print("Nombre:", self.Nombre)
-        print("DPI:", self.DPI)
-        print("Correo:", self.Correo)
-        print("Direccion:", self.Direccion)
-class Trabajador(Persona):
-    def __init__(self, Nombre, DPI, Correo, Tipo, Resenas):
-        super().__init__(Nombre,DPI,Correo)
-        self.Tipo = Tipo
-        self.Resenas = Resenas
+    def rating(self):
+        return self._rating
+
+    @rating.setter
+    def rating(self, rating):
+        self._rating = rating
+
+    def show_information(self):
+        print("Nombre:", self.name)
+        print("DPI:", self.dpi)
+        print("Correo:", self.email)
+
+class User(Person):
+    def __init__(self, name, dpi, email, rating, address):
+        super().__init__(name,dpi,email, rating)
+        self.address = address
+
     @property
-    def Tipo(self):
-        return self.__Tipo
-    @Tipo.setter
-    def Tipo(self, Tipo):
-        if len(Tipo)>=3:
-            self.__Tipo = Tipo
+    def address(self):
+        return self._address
+
+    @address.setter
+    def address(self, address):
+        self._address = address
+
+    def show_information(self):
+        print("Nombre:", self.name)
+        print("DPI:", self.dpi)
+        print("Correo:", self.email)
+        print("Dirección:", self.address)
+
+class Worker(Person):
+    def __init__(self, name, dpi, email, job_type, rating, reviews):
+        super().__init__(name,dpi,email, rating)
+        self.job_type = job_type
+        self.reviews = reviews
+
+    @property
+    def job_type(self):
+        return self._job_type
+
+    @job_type.setter
+    def job_type(self, job_type):
+        if len(job_type)>=3:
+            self._job_type = type
         else:
             print("Tipo de trabajo incorrecto")
+
     @property
-    def Resenas(self):
-        return self.__Resenas
-    @Resenas.setter
-    def Resenas(self, Resenas):
-        self.__Resenas = Resenas
-    def MostrarInformacion(self):
-        print("Nombre:", self.Nombre)
-        print("DPI:", self.DPI)
-        print("Correo:", self.Correo)
-        print("Tipo de trabajo:", self.Tipo)
-        print("Reseñas:", self.Resenas)
+    def reviews(self):
+        return self._reviews
+
+    @reviews.setter
+    def reviews(self, reviews):
+        self._reviews = reviews
+
+    def show_information(self):
+        print("Nombre:", self.name)
+        print("DPI:", self.dpi)
+        print("Correo:", self.email)
+        print("Tipo de trabajo:", self.type)
+        print("Reseñas:", self.reviews)
+
+class Stack():
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if len(self.items) > 0:
+            return self.items.pop()
+        else:
+            return None
+
+    def peek(self):
+        if len(self.items) > 0:
+            return self.items[-1]
+        else:
+            return None
+    def size(self):
+        return len(self.items)
+
+class Queue():
+    def __init__(self):
+        self.items = deque()
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def peek_left(self):
+        if len(self.items) > 0:
+            return self.items[0]
+        else:
+            return None
+
+    def dequeue(self):
+        if len(self.items) > 0:
+            return self.items.popleft()
+        else:
+            return None
+
+    def size(self):
+        return len(self.items)
