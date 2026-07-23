@@ -53,7 +53,7 @@ class Person:
         print("DPI:", self.dpi)
         print("Correo:", self.email)
 
-class User(Person):
+class Customer(Person):
     def __init__(self, name, dpi, email, rating, address):
         super().__init__(name,dpi,email, rating)
         self.address = address
@@ -101,7 +101,7 @@ class Worker(Person):
         print("Nombre:", self.name)
         print("DPI:", self.dpi)
         print("Correo:", self.email)
-        print("Tipo de trabajo:", self.type)
+        print("Tipo de trabajo:", self.job_type)
         print("Reseñas:", self.reviews)
 
 class Stack():
@@ -146,3 +146,51 @@ class Queue():
 
     def size(self):
         return len(self.items)
+
+customers = []
+plumbers = Stack()
+electricians = Stack()
+builders = Stack()
+it_professionals = Stack()
+
+jobs = Queue()
+
+while True:
+    choice = input(f"---- Técnico Exprés ---\n"
+                   f"1. Registrar usuario o servicio\n" 
+                   # submenu de clientes y trabajadores
+                   f"2. Consultar cola de servicios\n"
+                   # submenu de consultar siguiente trabajo y cola entera
+                   f"3. Ver calificaciones y reseñas\n"
+                   # submenu de reseñas de plomeros, electricistas, etc...
+                   # también opción de ver los trabajadores top 3 de cualquier tipo.
+                   f"4. Eliminar usuario\n"
+                   # submenu de clientes y trabajadores
+                   f"5. Salir\n")
+
+    match choice:
+        case "1":
+            while True:
+                choice = input(f"REGISTRAR:\n"
+                               f"1. Cliente\n"
+                               f"2. Trabajador\n"
+                               f"3. Servicio pedido\n")
+                # funciones afuera de menú para ejecutar según opción (3 funciones mínimo)
+        case "2":
+            while True:
+                choice = input(f"1. Consultar el siguiente trabajo a concluir\n"
+                               f"2. Consultar todos los trabajos pendientes\n")
+                # funciones afuera de menú para ejecutar según opción (2 funciones mínimo, ya existe por lo menos el peek_left)
+        case "3":
+            while True:
+                choice = input(f"\n")
+                # esto no tengo tan claro cómo debe de ser el flujo...
+        case "4":
+            while True:
+                choice = input(f"1. Eliminar cliente\n"
+                               f"2. Eliminar trabajador\n")
+        case "5":
+            print("¡Hasta la próxima!")
+            break
+        case _:
+            print("Opción inválida.")
