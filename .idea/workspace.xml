@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23368fed-5670-41fb-80d3-d1ec51713070" name="Changes" comment="">
+    <list default="true" id="23368fed-5670-41fb-80d3-d1ec51713070" name="Changes" comment="Creación de Clases Persona, Usuario y Trabajador&#10;&#10;Se agregaron los registros, (clientes, trabajadores y servicios)">
       <change beforePath="$PROJECT_DIR$/.idea/Proyecto1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Proyecto1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -46,13 +46,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Anderson",
     "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/ander/PycharmProjects/Progra_IV_Proyecto1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -79,6 +82,23 @@
       <updated>1784693141682</updated>
       <workItem from="1784693142739" duration="716000" />
     </task>
+    <task id="LOCAL-00001" summary="Creación de Clases Persona, Usuario y Trabajador">
+      <option name="closed" value="true" />
+      <created>1784753866168</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1784753866168</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Creación de Clases Persona, Usuario y Trabajador&#10;&#10;Se agregaron los registros, (clientes, trabajadores y servicios)">
+      <option name="closed" value="true" />
+      <created>1784846250070</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1784846250070</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -94,5 +114,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge pull request #2 from LouisGGandara/initial-menu-flow&#10;&#10;initial-menu-flow&#10;falta todavía" />
+    <MESSAGE value="Creación de Clases Persona, Usuario y Trabajador" />
+    <MESSAGE value="Creación de Clases Persona, Usuario y Trabajador&#10;&#10;Se agregaron los registros, (clientes, trabajadores y servicios)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creación de Clases Persona, Usuario y Trabajador&#10;&#10;Se agregaron los registros, (clientes, trabajadores y servicios)" />
   </component>
 </project>

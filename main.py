@@ -107,15 +107,17 @@ class Worker(Person):
         self._status = status
 
     def show_information(self):
-        print("Nombre:", self.name)
-        print("DPI:", self.dpi)
-        print("Correo:", self.email)
-        print("Tipo de trabajo:", self.job_type)
-        print("Reseñas:", self.reviews)
+        print("Nombre: ", self.name)
+        print("DPI: ", self.dpi)
+        print("Correo: ", self.email)
+        print("Tipo de trabajo: ", self.job_type)
+        print("Reseñas: ", self.reviews)
+        print("Estado: ", self.status)
 
 class Service:
-    def __init__(self, customer,job_type, description):
+    def __init__(self, customer,worker,job_type, description):
         self.customer = customer
+        self.worker = worker
         self.job_type = job_type
         self.description = description
 
@@ -126,6 +128,14 @@ class Service:
     @customer.setter
     def customer(self, customer):
         self._customer=customer
+
+    @property
+    def worker(self):
+        return self._worker
+
+    @worker.setter
+    def worker(self, worker):
+        self._worker = worker
 
     @property
     def job_type(self):
@@ -145,11 +155,6 @@ class Service:
             self._description = description
         else:
             print("Descripción incorrecta")
-
-    # funcion para mostrar el servicio customer,job_type, description
-    def show_information(self):
-        return f"Trabajo para: {self.customer.name}, Tipo de trabajo: {self.job_type}, Descripción: {self.description}"
-
 
 
 class Stack():
@@ -216,21 +221,35 @@ def registers_customers():
         if len(dpi)==13:
             for c in customers:
                 if c.dpi==dpi:
-                    print("Error esté Dpi ya esta registrado, ingrese otro")
                     isDpi=True
                     break
+
             if isDpi==False:
+                for w in workers:
+                    if w.dpi == dpi:
+                        isDpi = True
+                        break
+
+            if isDpi:
+                print("Error esté Dpi ya esta registrado, ingrese otro")
+            else:
                 break
         else:
             print("El DPI debe tener exactamente 13 dígitos")
+
     while True:
         email=input("Ingrese su correo: ")
         if "@" in email:
             break
         else:
             print("Correo incorrecto, vuela a intentarlo")
-    address=input("Ingrese su dirección: ")
-    new_customer = Customer(name,dpi,email,-1,address)
+    while True:
+        address=input("Ingrese su dirección: ")
+        if len(address)>=5:
+            break
+        else:
+            print("Error dirección incorrecta, vuela a intentarlo")
+    new_customer = Customer(name,dpi,email,0,address)
     customers.append(new_customer)
 
 def registers_workers():
@@ -296,7 +315,7 @@ def registers_workers():
             case _:
                 print("Opción incorrecta, vuelva a intentarlo")
 
-    new_worker=Worker(name,dpi,email,-1,work,[], "Disponible")
+    new_worker=Worker(name,dpi,email,0,work,[], "Disponible")
     workers.append(new_worker)
 
     if work =="Plomería":
@@ -318,10 +337,11 @@ def register_services():
         while True:
             dpi = input("Ingrese su DPI: ")
             isDpi = False
+            customer_found=None
             if len(dpi) == 13:
                 for c in customers:
                     if c.dpi == dpi:
-                        customer_found=c # Creo que aquí no es accessible la variable customer_found. Solo existe en el ciclo
+                        customer_found=c
                         isDpi = True
                         break
                 if isDpi:
@@ -340,89 +360,131 @@ def register_services():
                                     return
                                 else:
                                     work="Plomería"
-                                    break
+                                    contador=1
+                                    isAvailable=False
+                                    worker_found=None
+                                    available_workers = []
+                                    for w in workers:
+                                        if w.job_type=="Plomería" and w.status=="Disponible":
+                                            print(f"{contador} -- Nombre: {w.name}")
+                                            available_workers.append(w)
+                                            contador += 1
+                                            isAvailable = True
+                                    if isAvailable==False:
+                                        print("No hay plomeros disponibles.")
+                                        return
+                                    else:
+                                        while True:
+                                            choice=int(input("Seleccione un trabajador: "))
+                                            if choice>=1 and choice<=len(available_workers):
+                                                worker_found = available_workers[choice-1]
+                                                worker_found.status="Ocupado"
+                                                break
+                                            else:
+                                                print("Opción incorrecta, vuelva a intentarlo.")
                             case 2:
                                 if electricians.size()==0:
                                     print("No hay electricistas registrados.")
                                     return
                                 else:
                                     work="Electricidad"
-                                    break
+                                    contador = 1
+                                    isAvailable = False
+                                    worker_found = None
+                                    available_workers = []
+                                    for w in workers:
+                                        if w.job_type == "Electricidad" and w.status == "Disponible":
+                                            print(f"{contador} -- Nombre: {w.name}")
+                                            available_workers.append(w)
+                                            contador += 1
+                                            isAvailable = True
+                                    if isAvailable == False:
+                                        print("No hay plomeros disponibles.")
+                                        return
+                                    else:
+                                        while True:
+                                            choice = int(input("Seleccione un trabajador: "))
+                                            if choice >= 1 and choice <= len(available_workers):
+                                                worker_found = available_workers[choice - 1]
+                                                worker_found.status = "Ocupado"
+                                                break
+                                            else:
+                                                print("Opción incorrecta, vuelva a intentarlo.")
                             case 3:
                                 if builders.size()==0:
                                     print("No hay constructores registrados.")
                                     return
                                 else:
                                     work="Construcción"
-                                    break
+                                    contador = 1
+                                    isAvailable = False
+                                    worker_found = None
+                                    available_workers = []
+                                    for w in workers:
+                                        if w.job_type == "Construcción" and w.status == "Disponible":
+                                            print(f"{contador} -- Nombre: {w.name}")
+                                            available_workers.append(w)
+                                            contador += 1
+                                            isAvailable = True
+                                    if isAvailable == False:
+                                        print("No hay plomeros disponibles.")
+                                        return
+                                    else:
+                                        while True:
+                                            choice = int(input("Seleccione un trabajador: "))
+                                            if choice >= 1 and choice <= len(available_workers):
+                                                worker_found = available_workers[choice - 1]
+                                                worker_found.status = "Ocupado"
+                                                break
+                                            else:
+                                                print("Opción incorrecta, vuelva a intentarlo.")
                             case 4:
                                 if it_professionals.size()==0:
                                     print("No hay técnicos informáticos registrados.")
                                     return
                                 else:
                                     work="Técnicos informáticos"
-                                    break
+                                    contador = 1
+                                    isAvailable = False
+                                    worker_found = None
+                                    available_workers = []
+                                    for w in workers:
+                                        if w.job_type == "Técnicos informáticos" and w.status == "Disponible":
+                                            print(f"{contador} -- Nombre: {w.name}")
+                                            available_workers.append(w)
+                                            contador += 1
+                                            isAvailable = True
+                                    if isAvailable == False:
+                                        print("No hay plomeros disponibles.")
+                                        return
+                                    else:
+                                        while True:
+                                            choice = int(input("Seleccione un trabajador: "))
+                                            if choice >= 1 and choice <= len(available_workers):
+                                                worker_found = available_workers[choice - 1]
+                                                worker_found.status = "Ocupado"
+                                                break
+                                            else:
+                                                print("Opción incorrecta, vuelva a intentarlo.")
                             case 5:
                                 print("Volviendo al menú principal...")
                                 return
                             case _:
                                 print("Opción incorrecta, vuelva a intentarlo")
-                    while True:
-                        description=input("Describa su problema: ")
-                        if len(description)>=5:
-                            break
-                        else:
-                            print("Descripción incorrecta, vuelva a intentarlo")
-                    new_service= Service(customer_found,work,description)
-                    jobs.enqueue(new_service)
-                    print("Servicio registrado correctamente.")
-                    break
+                        while True:
+                            description=input("Describa su problema: ")
+                            if len(description)>=5:
+                                break
+                            else:
+                                print("Descripción incorrecta, vuelva a intentarlo")
+                        new_service= Service(customer_found,worker_found,work,description)
+                        jobs.enqueue(new_service)
+                        print("Servicio registrado correctamente.")
+                        break
                 else:
                     print("El cliente no existe")
             else:
                 print("DPI incorrecto, vuelva a intentarlo")
-
-def show_next_job():
-    if jobs.size() == 0:
-        print("No hay trabajos pendientes.")
-    else:
-        next_service = jobs.peek_left()
-        print(next_service.show_information())
-
-def show_all_jobs():
-    if jobs.size() == 0:
-        print("No hay trabajos pendientes.")
-    else:
-        for job in jobs:
-            print("------------------------------\n")
-            print(job.show_information())
-            print("------------------------------\n")
-
-def show_customer_ratings():
-    if len(customers) == 0:
-        print("No hay clientes registrados.")
-    else:
-        for customer in customers:
-            print("------------------------------\n")
-            print(f"Cliente: {customer.name}\n")
-            if customer.rating == -1
-                print("Sin calificación")
-            else:
-                print(f"Calificación: {customer.rating}\n")
-            print(f"------------------------------\n")
-
-def show_worker_ratings():
-    if len(workers) == 0:
-        print("No hay trabajadores registrados.")
-    else:
-        for worker in workers:
-            print(f"Trabajador: {worker.name}\n")
-            print(f"Servicio: {worker.job_type}\n")
-            if worker.rating == -1:
-                #seguir aqui
-
-
-
 while True:
     choice = input(f"---- Técnico Exprés ---\n"
                    f"1. Registrar usuario o servicio\n" 
@@ -462,24 +524,11 @@ while True:
         case "2":
             while True:
                 choice = input(f"1. Consultar el siguiente trabajo a concluir\n"
-                               f"2. Consultar todos los trabajos pendientes\n"
-                               f"3. Regresar\n")
+                               f"2. Consultar todos los trabajos pendientes\n")
                 # funciones afuera de menú para ejecutar según opción (2 funciones mínimo, ya existe por lo menos el peek_left)
-                match choice:
-                    case "1":
-                        show_next_job()
-                    case "2":
-                        show_all_jobs()
-                    case "3":
-                        break
-                    case _:
-                        print("Opción inválida.")
-
         case "3":
             while True:
-                choice = input(f"1. Ver calificaciones de los clientes\n"
-                               f"2. Ver calificaciones y reseñas de los trabajadores\n"
-                               f"3. Regresar\n")
+                choice = input(f"\n")
                 # esto no tengo tan claro cómo debe de ser el flujo...
         case "4":
             while True:
