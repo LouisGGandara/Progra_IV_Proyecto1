@@ -112,6 +112,7 @@ class Worker(Person):
         print("Correo:", self.email)
         print("Tipo de trabajo:", self.job_type)
         print("Reseñas:", self.reviews)
+
 class Service:
     def __init__(self, customer,job_type, description):
         self.customer = customer
@@ -144,6 +145,11 @@ class Service:
             self._description = description
         else:
             print("Descripción incorrecta")
+
+    # funcion para mostrar el servicio customer,job_type, description
+    def show_information(self):
+        return f"Trabajo para: {self.customer.name}, Tipo de trabajo: {self.job_type}, Descripción: {self.description}"
+
 
 
 class Stack():
@@ -224,7 +230,7 @@ def registers_customers():
         else:
             print("Correo incorrecto, vuela a intentarlo")
     address=input("Ingrese su dirección: ")
-    new_customer = Customer(name,dpi,email,0,address)
+    new_customer = Customer(name,dpi,email,-1,address)
     customers.append(new_customer)
 
 def registers_workers():
@@ -290,7 +296,7 @@ def registers_workers():
             case _:
                 print("Opción incorrecta, vuelva a intentarlo")
 
-    new_worker=Worker(name,dpi,email,0,work,[], "Disponible")
+    new_worker=Worker(name,dpi,email,-1,work,[], "Disponible")
     workers.append(new_worker)
 
     if work =="Plomería":
@@ -315,7 +321,7 @@ def register_services():
             if len(dpi) == 13:
                 for c in customers:
                     if c.dpi == dpi:
-                        customer_found=c
+                        customer_found=c # Creo que aquí no es accessible la variable customer_found. Solo existe en el ciclo
                         isDpi = True
                         break
                 if isDpi:
@@ -375,6 +381,48 @@ def register_services():
                     print("El cliente no existe")
             else:
                 print("DPI incorrecto, vuelva a intentarlo")
+
+def show_next_job():
+    if jobs.size() == 0:
+        print("No hay trabajos pendientes.")
+    else:
+        next_service = jobs.peek_left()
+        print(next_service.show_information())
+
+def show_all_jobs():
+    if jobs.size() == 0:
+        print("No hay trabajos pendientes.")
+    else:
+        for job in jobs:
+            print("------------------------------\n")
+            print(job.show_information())
+            print("------------------------------\n")
+
+def show_customer_ratings():
+    if len(customers) == 0:
+        print("No hay clientes registrados.")
+    else:
+        for customer in customers:
+            print("------------------------------\n")
+            print(f"Cliente: {customer.name}\n")
+            if customer.rating == -1
+                print("Sin calificación")
+            else:
+                print(f"Calificación: {customer.rating}\n")
+            print(f"------------------------------\n")
+
+def show_worker_ratings():
+    if len(workers) == 0:
+        print("No hay trabajadores registrados.")
+    else:
+        for worker in workers:
+            print(f"Trabajador: {worker.name}\n")
+            print(f"Servicio: {worker.job_type}\n")
+            if worker.rating == -1:
+                #seguir aqui
+
+
+
 while True:
     choice = input(f"---- Técnico Exprés ---\n"
                    f"1. Registrar usuario o servicio\n" 
@@ -414,11 +462,24 @@ while True:
         case "2":
             while True:
                 choice = input(f"1. Consultar el siguiente trabajo a concluir\n"
-                               f"2. Consultar todos los trabajos pendientes\n")
+                               f"2. Consultar todos los trabajos pendientes\n"
+                               f"3. Regresar\n")
                 # funciones afuera de menú para ejecutar según opción (2 funciones mínimo, ya existe por lo menos el peek_left)
+                match choice:
+                    case "1":
+                        show_next_job()
+                    case "2":
+                        show_all_jobs()
+                    case "3":
+                        break
+                    case _:
+                        print("Opción inválida.")
+
         case "3":
             while True:
-                choice = input(f"\n")
+                choice = input(f"1. Ver calificaciones de los clientes\n"
+                               f"2. Ver calificaciones y reseñas de los trabajadores\n"
+                               f"3. Regresar\n")
                 # esto no tengo tan claro cómo debe de ser el flujo...
         case "4":
             while True:
