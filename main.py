@@ -54,9 +54,11 @@ class Person:
         print("Correo:", self.email)
 
 class Customer(Person):
-    def __init__(self, name, dpi, email, rating, address):
+    def __init__(self, name, dpi, email, rating, address, jobs_finished, rating_sum):
         super().__init__(name,dpi,email, rating)
         self.address = address
+        self.jobs_finished = jobs_finished
+        self.rating_sum = rating_sum
 
     @property
     def address(self):
@@ -66,6 +68,22 @@ class Customer(Person):
     def address(self, address):
         self._address = address
 
+    @property
+    def jobs_finished(self):
+        return self._jobs_finished
+
+    @jobs_finished.setter
+    def jobs_finished(self, jobs_finished):
+        self._jobs_finished = jobs_finished
+
+    @property
+    def rating_sum(self):
+        return self._rating_sum
+
+    @rating_sum.setter
+    def rating_sum(self, rating_sum):
+        self._rating_sum = rating_sum
+
     def show_information(self):
         print("Nombre:", self.name)
         print("DPI:", self.dpi)
@@ -73,11 +91,12 @@ class Customer(Person):
         print("Dirección:", self.address)
 
 class Worker(Person):
-    def __init__(self, name, dpi, email, rating, job_type, reviews, status):
+    def __init__(self, name, dpi, email, rating, job_type, reviews, status, rating_sum):
         super().__init__(name,dpi,email, rating)
         self.job_type = job_type
         self.reviews = reviews
         self.status = status
+        self.rating_sum = rating_sum
 
     @property
     def job_type(self):
@@ -105,6 +124,14 @@ class Worker(Person):
     @status.setter
     def status(self, status):
         self._status = status
+
+    @property
+    def rating_sum(self):
+        return self._rating_sum
+
+    @rating_sum.setter
+    def rating_sum(self, rating_sum):
+        self._rating_sum = rating_sum
 
     def show_information(self):
         print("Nombre: ", self.name)
@@ -155,6 +182,10 @@ class Service:
             self._description = description
         else:
             print("Descripción incorrecta")
+
+    # funcion para mostrar el servicio customer,job_type, description
+    def show_information(self):
+        return f"Trabajo para: {self.customer.name}, Tipo de trabajo: {self.job_type}, Descripción: {self.description}"
 
 
 class Stack():
@@ -249,7 +280,7 @@ def registers_customers():
             break
         else:
             print("Error dirección incorrecta, vuela a intentarlo")
-    new_customer = Customer(name,dpi,email,0,address)
+    new_customer = Customer(name,dpi,email,-1,address, 0, 0)
     customers.append(new_customer)
 
 def registers_workers():
@@ -315,7 +346,7 @@ def registers_workers():
             case _:
                 print("Opción incorrecta, vuelva a intentarlo")
 
-    new_worker=Worker(name,dpi,email,0,work,[], "Disponible")
+    new_worker=Worker(name,dpi,email,-1,work,[], "Disponible", 0)
     workers.append(new_worker)
 
     if work =="Plomería":
@@ -399,7 +430,7 @@ def register_services():
                                             contador += 1
                                             isAvailable = True
                                     if isAvailable == False:
-                                        print("No hay plomeros disponibles.")
+                                        print("No hay electricistas disponibles.")
                                         return
                                     else:
                                         while True:
@@ -427,7 +458,7 @@ def register_services():
                                             contador += 1
                                             isAvailable = True
                                     if isAvailable == False:
-                                        print("No hay plomeros disponibles.")
+                                        print("No hay constructores disponibles.")
                                         return
                                     else:
                                         while True:
@@ -455,7 +486,7 @@ def register_services():
                                             contador += 1
                                             isAvailable = True
                                     if isAvailable == False:
-                                        print("No hay plomeros disponibles.")
+                                        print("No hay técnicos informáticos disponibles.")
                                         return
                                     else:
                                         while True:
@@ -471,6 +502,7 @@ def register_services():
                                 return
                             case _:
                                 print("Opción incorrecta, vuelva a intentarlo")
+                                continue # este continue forza al ciclo a reiniciar
                         while True:
                             description=input("Describa su problema: ")
                             if len(description)>=5:
@@ -480,11 +512,91 @@ def register_services():
                         new_service= Service(customer_found,worker_found,work,description)
                         jobs.enqueue(new_service)
                         print("Servicio registrado correctamente.")
-                        break
+                        return
                 else:
                     print("El cliente no existe")
             else:
                 print("DPI incorrecto, vuelva a intentarlo")
+
+def show_next_job():
+    if jobs.size() == 0:
+        print("No hay trabajos pendientes.")
+    else:
+        next_service = jobs.peek_left()
+        print(next_service.show_information())
+
+def show_all_jobs():
+    if jobs.size() == 0:
+        print("No hay trabajos pendientes.")
+    else:
+        for job in jobs.items:
+            print("------------------------------\n")
+            print(job.show_information())
+            print("------------------------------\n")
+
+def finish_job():
+    if jobs.size() == 0:
+        print("No hay trabajos pendientes.")
+    else:
+        counter = 1
+        for job in jobs.items:
+            print("------------------------------\n")
+            print(f"Trabajo número {counter}: ")
+            print(job.show_information())
+            print("------------------------------\n")
+            counter += 1
+        choice = int(input("Selecciona el trabajo concluido: "))
+        if choice > jobs.size() or choice < 1:
+            print("Opción invalida.")
+            return
+        else:
+            worker_dpi = jobs.items[choice-1].worker.dpi
+            customer_dpi = jobs.items[choice-1].customer.dpi
+            for worker in workers:
+                if worker.dpi == worker_dpi:
+                    review = input("Deja una reseña de por lo menos una palabra: ")
+                    worker.reviews.append(review)
+                    if worker.rating == -1:
+                        worker.rating = 0
+                    job_rating = int(input("¿Qué calificación se le da al trabajo del trabajador? (0 - 5)"))
+                    worker.rating_sum += job_rating
+                    worker.rating = worker.rating_sum / len(worker.reviews)
+                    worker.status = "Disponible"
+                    break
+            for customer in customers:
+                if customer.dpi == customer_dpi:
+                    if customer.rating == -1:
+                        customer.rating = 0
+                    customer.jobs_finished += 1
+                    customer.rating_sum += int(input("¿Qué calificación se le da al cliente?"))
+                    customer.rating = customer.rating_sum / customer.jobs_finished
+                    break
+            del jobs.items[choice - 1]
+
+def show_customer_ratings():
+    if len(customers) == 0:
+        print("No hay clientes registrados.")
+    else:
+        for customer in customers:
+            print("------------------------------\n")
+            print(f"Cliente: {customer.name}\n")
+            if customer.rating == -1:
+                print("Sin calificación")
+            else:
+                print(f"Calificación: {customer.rating}\n")
+            print(f"------------------------------\n")
+
+def show_worker_ratings():
+    if len(workers) == 0:
+        print("No hay trabajadores registrados.")
+    else:
+        for worker in workers:
+            print(f"Trabajador: {worker.name}\n")
+            print(f"Servicio: {worker.job_type}\n")
+            if worker.rating == -1:
+                pass
+            # Esta función se tiene que terminar
+
 while True:
     choice = input(f"---- Técnico Exprés ---\n"
                    f"1. Registrar usuario o servicio\n" 
@@ -508,28 +620,36 @@ while True:
                                f"4. Volver al menú principal\n")
                 match choice:
                     case "1":
-                        #Ya quedo lista la función de registrar cliente
                         registers_customers()
                     case "2":
-                        #Ya quedo lista la función de registrar trabajador
                         registers_workers()
                     case "3":
-                        #Ya quedo lista la función de registrar servicio.
                         register_services()
                     case "4":
                         break
                     case _:
                         print("Error, está opción no existe")
-                # funciones afuera de menú para ejecutar según opción (3 funciones mínimo)
         case "2":
             while True:
                 choice = input(f"1. Consultar el siguiente trabajo a concluir\n"
-                               f"2. Consultar todos los trabajos pendientes\n")
-                # funciones afuera de menú para ejecutar según opción (2 funciones mínimo, ya existe por lo menos el peek_left)
+                               f"2. Consultar todos los trabajos pendientes\n"
+                               f"3. Concluir trabajo\n"
+                               f"4. Regresar\n")
+                match choice:
+                    case "1":
+                        show_next_job()
+                    case "2":
+                        show_all_jobs()
+                    case "3":
+                        finish_job()
+                    case "4":
+                        break
+                    case _:
+                        print("Opción inválida.")
+        # Aquí en adelante se tiene que terminar
         case "3":
             while True:
                 choice = input(f"\n")
-                # esto no tengo tan claro cómo debe de ser el flujo...
         case "4":
             while True:
                 choice = input(f"1. Eliminar cliente\n"
