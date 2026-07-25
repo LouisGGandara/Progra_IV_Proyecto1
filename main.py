@@ -391,15 +391,15 @@ def register_services():
                                     return
                                 else:
                                     work="Plomería"
-                                    contador=1
+                                    counter=1
                                     isAvailable=False
                                     worker_found=None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type=="Plomería" and w.status=="Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable==False:
                                         print("No hay plomeros disponibles.")
@@ -419,15 +419,15 @@ def register_services():
                                     return
                                 else:
                                     work="Electricidad"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Electricidad" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay electricistas disponibles.")
@@ -447,15 +447,15 @@ def register_services():
                                     return
                                 else:
                                     work="Construcción"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Construcción" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay constructores disponibles.")
@@ -475,15 +475,15 @@ def register_services():
                                     return
                                 else:
                                     work="Técnicos informáticos"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Técnicos informáticos" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay técnicos informáticos disponibles.")
@@ -594,7 +594,16 @@ def show_worker_ratings():
             print(f"Trabajador: {worker.name}\n")
             print(f"Servicio: {worker.job_type}\n")
             if worker.rating == -1:
-                pass
+                print("Sin calificación")
+            else:
+                print(f"Calificación: {worker.rating}")
+            print("\tReseñas")
+            if len(worker.reviews) ==0:
+                print("No hay reseñas")
+            else:
+                for review in worker.reviews:
+                    print(" - ", review)
+            print("------------------------------")
             # Esta función se tiene que terminar
 
 while True:
@@ -649,7 +658,19 @@ while True:
         # Aquí en adelante se tiene que terminar
         case "3":
             while True:
-                choice = input(f"\n")
+                choice = input(f"CALIFICACIONES Y RESEÑAS\n"
+                               f"1. Ver calificaciones de clientes\n"
+                               f"2. Ver calificaciones y reseñas de trabajadores\n"
+                               f"3. Volver al menú principal\n")
+                match choice:
+                    case "1":
+                        show_customer_ratings()
+                    case "2":
+                        show_worker_ratings()
+                    case "3":
+                        break
+                    case _:
+                        print("Opción incorrecta vuelva a intenatarlo")
         case "4":
             while True:
                 choice = input(f"1. Eliminar cliente\n"
