@@ -183,7 +183,6 @@ class Service:
         else:
             print("Descripción incorrecta")
 
-    # funcion para mostrar el servicio customer,job_type, description
     def show_information(self):
         return f"Trabajo para: {self.customer.name}, Tipo de trabajo: {self.job_type}, Descripción: {self.description}"
 
@@ -231,7 +230,6 @@ class Queue():
     def size(self):
         return len(self.items)
 
-#Agregue una lista workers, esto para la validación de los DPI'S (Para que no se repita el dpi)
 customers = []
 workers = []
 plumbers = Stack()
@@ -391,15 +389,15 @@ def register_services():
                                     return
                                 else:
                                     work="Plomería"
-                                    contador=1
+                                    counter=1
                                     isAvailable=False
                                     worker_found=None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type=="Plomería" and w.status=="Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable==False:
                                         print("No hay plomeros disponibles.")
@@ -419,15 +417,15 @@ def register_services():
                                     return
                                 else:
                                     work="Electricidad"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Electricidad" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay electricistas disponibles.")
@@ -447,15 +445,15 @@ def register_services():
                                     return
                                 else:
                                     work="Construcción"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Construcción" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay constructores disponibles.")
@@ -475,15 +473,15 @@ def register_services():
                                     return
                                 else:
                                     work="Técnicos informáticos"
-                                    contador = 1
+                                    counter = 1
                                     isAvailable = False
                                     worker_found = None
                                     available_workers = []
                                     for w in workers:
                                         if w.job_type == "Técnicos informáticos" and w.status == "Disponible":
-                                            print(f"{contador} -- Nombre: {w.name}")
+                                            print(f"{counter} -- Nombre: {w.name}")
                                             available_workers.append(w)
-                                            contador += 1
+                                            counter += 1
                                             isAvailable = True
                                     if isAvailable == False:
                                         print("No hay técnicos informáticos disponibles.")
@@ -595,19 +593,84 @@ def show_worker_ratings():
             print(f"Servicio: {worker.job_type}\n")
             if worker.rating == -1:
                 pass
-            # Esta función se tiene que terminar
+                print("Sin calificación")
+            else:
+                print(f"Calificación: {worker.rating}")
+            print("\tReseñas")
+            if len(worker.reviews) ==0:
+                print("No hay reseñas")
+            else:
+                for review in worker.reviews:
+                    print(" - ", review)
+            print("------------------------------")
+
+def delete_customer():
+    while True:
+        dpi = input(f"Ingresa el DPI del cliente a eliminar: \n"
+                    f"Ingresa 0 para salir.\n")
+        if dpi == "0":
+            return
+        counter = 0
+        found = False
+        for customer in customers:
+            if customer.dpi == dpi:
+                found = True
+                del customers[counter]
+                print("Cliente eliminado correctamente.")
+                return
+            counter += 1
+        if found == False:
+            print("DPI no existe.")
+
+def delete_worker():
+    while True:
+        dpi = input(f"Ingresa el DPI del trabajador a eliminar: \n"
+                    f"Ingresa 0 para salir.\n")
+        if dpi == "0":
+            return
+        counter = 0
+        found = False
+        for worker in workers:
+            if worker.dpi == dpi:
+                found = True
+                counter_2 = 0
+                for plumber in plumbers.items:
+                    if dpi == plumber.dpi:
+                        del plumbers.items[counter_2]
+                        break
+                    counter_2 += 1
+                counter_2 = 0
+                for electrician in electricians.items:
+                    if dpi == electrician.dpi:
+                        del electricians.items[counter_2]
+                        break
+                    counter_2 += 1
+                counter_2 = 0
+                for builder in builders.items:
+                    if dpi == builder.dpi:
+                        del builders.items[counter_2]
+                        break
+                    counter_2 += 1
+                counter_2 = 0
+                for it_professional in it_professionals.items:
+                    if dpi == it_professional.dpi:
+                        del it_professionals.items[counter_2]
+                        break
+                    counter_2 += 1
+                del workers[counter]
+                print("Trabajador eliminado correctamente.")
+                return
+            counter += 1
+        if found == False:
+            print("DPI no existe.")
+
 
 while True:
     choice = input(f"---- Técnico Exprés ---\n"
                    f"1. Registrar usuario o servicio\n" 
-                   # submenu de clientes y trabajadores
                    f"2. Consultar cola de servicios\n"
-                   # submenu de consultar siguiente trabajo y cola entera
                    f"3. Ver calificaciones y reseñas\n"
-                   # submenu de reseñas de plomeros, electricistas, etc...
-                   # también opción de ver los trabajadores top 3 de cualquier tipo.
                    f"4. Eliminar usuario\n"
-                   # submenu de clientes y trabajadores
                    f"5. Salir\n")
 
     match choice:
@@ -646,14 +709,36 @@ while True:
                         break
                     case _:
                         print("Opción inválida.")
-        # Aquí en adelante se tiene que terminar
+
         case "3":
             while True:
-                choice = input(f"\n")
+                choice = input(f"CALIFICACIONES Y RESEÑAS\n"
+                               f"1. Ver calificaciones de clientes\n"
+                               f"2. Ver calificaciones y reseñas de trabajadores\n"
+                               f"3. Volver al menú principal\n")
+                match choice:
+                    case "1":
+                        show_customer_ratings()
+                    case "2":
+                        show_worker_ratings()
+                    case "3":
+                        break
+                    case _:
+                        print("Opción incorrecta vuelva a intentarlo")
         case "4":
             while True:
                 choice = input(f"1. Eliminar cliente\n"
-                               f"2. Eliminar trabajador\n")
+                               f"2. Eliminar trabajador\n"
+                               f"3. Volver al menú principal\n")
+                match choice:
+                    case "1":
+                        delete_customer()
+                    case "2":
+                        delete_worker()
+                    case "3":
+                        break
+                    case _:
+                        print("Opción inválida.")
         case "5":
             print("¡Hasta la próxima!")
             break
