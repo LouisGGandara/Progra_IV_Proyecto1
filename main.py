@@ -262,7 +262,7 @@ def registers_customers():
     while True:
         dpi=input("Ingrese su DPI: ")
         isDpi=False
-        if len(dpi)==13:
+        if len(dpi)==13 and dpi.isdigit():
             for c in customers:
                 if c.dpi==dpi:
                     isDpi=True
@@ -307,7 +307,7 @@ def registers_workers():
     while True:
         dpi=input("Ingrese su DPI: ")
         isDpi=False
-        if len(dpi)==13:
+        if len(dpi)==13 and dpi.isdigit():
             for c in customers:
                 if c.dpi==dpi:
                     isDpi=True
@@ -380,7 +380,7 @@ def register_services():
             dpi = input("Ingrese su DPI: ")
             isDpi = False
             customer_found=None
-            if len(dpi) == 13:
+            if len(dpi) == 13 and dpi.isdigit():
                 for c in customers:
                     if c.dpi == dpi:
                         customer_found=c
@@ -547,7 +547,7 @@ def show_worker_ratings():
 def delete_customer():
     while True:
         dpi = input(f"Ingresa el DPI del cliente a eliminar: \n"
-                    f"Ingresa 0 para salir.\n")
+                    f"Ingresa 0 para salir.\n").
         if dpi == "0":
             return
         counter = 0
