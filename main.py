@@ -547,7 +547,7 @@ def show_worker_ratings():
 def delete_customer():
     while True:
         dpi = input(f"Ingresa el DPI del cliente a eliminar: \n"
-                    f"Ingresa 0 para salir.\n").
+                    f"Ingresa 0 para salir.\n")
         if dpi == "0":
             return
         counter = 0
