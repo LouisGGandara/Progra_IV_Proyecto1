@@ -254,7 +254,7 @@ jobs = Queue()
 
 def registers_customers():
     while True:
-        name=input("Ingrese su nombre: ")
+        name=input("Ingrese su nombre: ").strip()
         if len(name)>=3:
             break
         else:
@@ -298,7 +298,7 @@ def registers_customers():
 
 def registers_workers():
     while True:
-        name=input("Ingrese su nombre: ")
+        name=input("Ingrese su nombre: ").strip()
         if len(name)>=3:
             break
         else:
